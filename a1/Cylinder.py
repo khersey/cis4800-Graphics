@@ -1,15 +1,14 @@
-from Shape import *
-from Face import *
-from Edge import *
-from Vertex import *
+from Mesh import *
 
 class Cylinder:
 
     def __init__(self):
-        self.shape = Shape()
+        self.mesh = Mesh()
 
     def build_polygon_mesh(self):
-
+        pass
     
 
-    def build_triangle_mesh(self, resolution):
+    def build_triangle_mesh(self, resolution):  
+        pass
+
