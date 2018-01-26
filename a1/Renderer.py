@@ -2,7 +2,6 @@ from Mesh import *
 from math import *
 from PIL import Image
 from itertools import chain
-import numpy as np
 
 class Renderer:
 
@@ -27,13 +26,13 @@ class Renderer:
 
         image = Image.new("RGB", (dimensions, dimensions), (0,0,0) )
 
-        offset = self.dimensions / 2
+        offset = self.dimensions / 2 - 2
 
         for edge in self.mesh.edges:
-            x0 = (edge[0][0] + 1) * offset
-            y0 = (edge[0][1] + 1) * offset
-            x1 = (edge[1][0] + 1) * offset
-            y1 = (edge[1][1] + 1) * offset
+            x0 = float((edge[0][0] + 1) * offset) +1
+            y0 = float((edge[0][1] + 1) * offset) +1
+            x1 = float((edge[1][0] + 1) * offset) +1
+            y1 = float((edge[1][1] + 1) * offset) +1
 
             self.drawLine(x0, y0, x1, y1)
         flat_canvas = list(chain.from_iterable(self.canvas))
@@ -54,8 +53,8 @@ class Renderer:
         if py >= self.dimensions:
             py = self.dimensions - 1
 
-        # maybe only draw if cc is greater than pixels current value
-        self.canvas[px][py] = (cc, cc, cc)
+        # NOTE: x and y are flipped here, otherwise the image prints sideways
+        self.canvas[py][px] = (cc, cc, cc)
 
     def ipart(self, x):
         return floor(x)
@@ -67,7 +66,7 @@ class Renderer:
         return x - floor(x)
 
     def rfpart(self, x):
-        return 1 - self.fpart(x)
+        return 1.0 - self.fpart(x)
 
     def drawLine(self, x0, y0, x1, y1):
         steep = abs(y1 - y0) > abs(x1 - x0)
@@ -86,28 +85,28 @@ class Renderer:
         if dx == 0:
             gradient = 1.0
         else: # must be nested to prevent division by 0 error
-            gradient = dy / dx
+            gradient = float(dy) / float(dx)
 
         # first endpoint
         xend = self.round(x0)
-        yend = y0 + gradient * (xend - x0)
-        xgap = self.rfpart(x0 + 0.5)
+        yend = float(y0) + gradient * (float(xend) - float(x0))
+        xgap = self.rfpart(float(x0) + 0.5)
         xpx11 = int(xend)
-        ypx11 = int(self.ipart(yend)) 
+        ypx11 = self.ipart(yend)
         if steep:
             self.plot(ypx11, xpx11, self.rfpart(yend) * xgap)
             self.plot(ypx11 + 1, xpx11, self.fpart(yend) * xgap)
         else:
             self.plot(xpx11, ypx11, self.rfpart(yend) * xgap)
-            self.plot(xpx11 , ypx11 + 1, self.fpart(yend) * xgap)
-        intery = yend + gradient
+            self.plot(xpx11, ypx11 + 1 , self.fpart(yend) * xgap)
+        intery = float(yend + gradient)
 
         # second endpoint
-        xend = self.round(x1)
+        xend = self.round(float(x1))
         yend = y1 + gradient * (xend - x1)
-        xgap = self.rfpart(x1 + 0.5)
+        xgap = self.rfpart(float(x1) + 0.5)
         xpx12 = int(xend)
-        ypx12 = int(self.ipart(yend)) 
+        ypx12 = self.ipart(yend)
         if steep:
             self.plot(ypx12, xpx12, self.rfpart(yend) * xgap)
             self.plot(ypx12 + 1, xpx12, self.fpart(yend) * xgap)
@@ -119,12 +118,12 @@ class Renderer:
         if steep:
             for x in range(xpx11 + 1, xpx12 - 1):
                 self.plot(self.ipart(intery), x, self.rfpart(intery))
-                self.plot(self.ipart(intery) + 1, x, self.rfpart(intery))
+                self.plot(self.ipart(intery) + 1, x, self.fpart(intery))
                 intery = intery + gradient
         else:
             for x in range(xpx11 + 1, xpx12 - 1):
                 self.plot(x, self.ipart(intery), self.rfpart(intery))
-                self.plot(x, self.ipart(intery) + 1, self.rfpart(intery))
+                self.plot(x, self.ipart(intery) + 1, self.fpart(intery))
                 intery = intery + gradient
 
         

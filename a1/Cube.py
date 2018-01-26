@@ -3,7 +3,7 @@ from Mesh import *
 class Cube:
 
     def __init__(self):
-        self.mesh = Mesh()
+        self.mesh = None
 
     def build_polygon_mesh(self):
         self.build_triangle_mesh(1)
@@ -161,9 +161,9 @@ class Cube:
             
                 # x = -1
                 coordinates = (-1, i, j)
-                horizontal  = (1, i_plus1, j)
-                vertical    = (1, i, j_plus1)
-                diagonal    = (1, i_plus1, j_plus1)
+                horizontal  = (-1, i_plus1, j)
+                vertical    = (-1, i, j_plus1)
+                diagonal    = (-1, i_plus1, j_plus1)
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )

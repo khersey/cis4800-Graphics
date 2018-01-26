@@ -5,17 +5,23 @@ from Renderer import *
 
 
 def main():
+    randy = Renderer()
 
     polyCube = Cube()
     polyCube.build_polygon_mesh()
+    randy.render(polyCube.mesh, 512, "polyCube.jpg")
 
     triangleCube = Cube()
-    triangleCube.build_triangle_mesh(13)
+    triangleCube.build_triangle_mesh(4000)
+    randy.render(triangleCube.mesh, 1080, "HDcube.jpg")
 
-    randy = Renderer()
+    polyCylinder = Cylinder()
+    polyCylinder.build_polygon_mesh()
+    randy.render(polyCylinder.mesh, 512, "polyCylinder.jpg")
 
-    randy.render(polyCube.mesh, 512, "polyCube.jpg")
-    randy.render(triangleCube.mesh, 1080, "triangleCube.jpg")
+    triangleCylinder = Cylinder()
+    triangleCylinder.build_triangle_mesh(4000)
+    randy.render(triangleCylinder.mesh, 1080, "HDcylinder.jpg")
 
 
 if __name__ == "__main__":
