@@ -1,27 +1,35 @@
 from math import *
 
 def x_rotation(angle):
+    # turns out sin and cos expect radians
+    r = radians(angle)
+    
     return [
         [1.0, 0.0, 0.0, 0.0],
-        [0.0, cos(angle), -sin(angle), 0.0],
-        [0.0, sin(angle), cos(angle), 0.0],
+        [0.0, cos(r), -sin(r), 0.0],
+        [0.0, sin(r), cos(r), 0.0],
         [0.0, 0.0, 0.0, 1.0]
     ]
 
 def z_rotation(angle):
+    # turns out sin and cos expect radians
+    r = radians(angle)
+
     return [
-        [cos(angle), -sin(angle), 0.0, 0.0],
-        [sin(angle), cos(angle), 0.0, 0.0],
+        [cos(r), -sin(r), 0.0, 0.0],
+        [sin(r), cos(r), 0.0, 0.0],
         [0.0, 0.0, 1.0, 0.0],
         [0.0, 0.0, 0.0, 1.0]
     ]
 
 def y_rotation(angle):
-    # NOTE: THIS DOES NOT WORK YET, it's copy pasta of z_rotation
+    # turns out sin and cos expect radians
+    r = radians(angle)
+
     return [
-        [cos(angle), -sin(angle), 0.0, 0.0],
-        [sin(angle), cos(angle), 0.0, 0.0],
-        [0.0, 0.0, 1.0, 0.0],
+        [cos(r), 0.0, -sin(r), 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [sin(r), 0.0, cos(r), 0.0],
         [0.0, 0.0, 0.0, 1.0]
     ]
 
@@ -40,4 +48,3 @@ def scale(x, y, z):
         [0.0, 0.0, z,   0.0],
         [0.0, 0.0, 0.0, 1.0]
     ]
-    
