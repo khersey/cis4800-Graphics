@@ -25,8 +25,6 @@ class Renderer:
             self.canvas.append(row)
 
         image = Image.new("RGB", (dimensions, dimensions), (0,0,0) )
-        tammy.connelly
-        t*************y@shopify.com
 
         offset = self.dimensions / 2 - 2
 
