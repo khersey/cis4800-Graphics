@@ -13,7 +13,7 @@ def main():
     # randy.render(polyCube.mesh, 512, "polyCube.jpg")
 
     triangleCube = Cube()
-    triangleCube.build_triangle_mesh(24)
+    triangleCube.build_triangle_mesh(0)
 
     cubeMesh = triangleCube.mesh
     cubeMesh.add_transformation(TransformationFactory.scale(0.5,0.5,0.5))
