@@ -30,7 +30,7 @@ class Mesh:
             first = solution_dict.get(edge[0])
             second = solution_dict.get(edge[1])
             if first == None or second == None:
-                print("ERROR: edge(" + edge[0] + ", " + edge[1] + ") has an unregistered vertex!")
+                print("ERROR: edge(" + str(edge[0]) + ", " + str(edge[1]) + ") has an unregistered vertex!")
             self.edges[index] = (first, second)
 
         if self.previous_transforms == None:

@@ -28,7 +28,6 @@ class Renderer:
         py = int(y)
         cc = int( 255.0 * c )
 
-        # NOTE: x and y are flipped here, otherwise the image prints sideways
         if (px < self.dimensions and py < self.dimensions and px >= 0 and py >= 0):
             self.canvas[py][px] = (cc, cc, cc)
 

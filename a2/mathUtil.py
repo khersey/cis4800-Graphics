@@ -53,7 +53,7 @@ def gaussian_elimination(matrix):
             f = matrix[i][k] / matrix[k][k]
             for j in range(k+1, n):
                 matrix[i][j] -= matrix[k][j] * f
-            matrix[i][k] = 0.0
+            #matrix[i][k] = 0.0
 
     # backfill or something
     for k in range(m-1, 0-1, -1):
@@ -64,7 +64,9 @@ def gaussian_elimination(matrix):
         matrix[k][k] /= divider
 
         for i in range(m, n):
-            matrix[k][i] = round(matrix[k][i] / divider)
+            matrix[k][i] = matrix[k][i] / divider
+            if abs(matrix[k][i]) < 0.0000000001:
+                matrix[k][i] = 0.0
 
     return True
 

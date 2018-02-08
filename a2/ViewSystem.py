@@ -59,23 +59,13 @@ class ViewSystem:
         magnitude = sqrt(v_CO[0]*v_CO[0] + v_CO[1]*v_CO[1] + v_CO[2]*v_CO[2]) # get the magnitude / norm
         # build unit vectors for new basis
         self.uv_N = (v_CO[0] / magnitude, v_CO[1] / magnitude, v_CO[2] / magnitude) # unit vector N
-        self.uv_V = cross_product( self.uv_N, (0,1,0) ) # unit vector V
+        self.uv_V = cross_product( self.uv_N, (0,0,1) ) # unit vector V
         self.uv_U = cross_product( self.uv_N, self.uv_V )    # unit vector U
 
-        aug_matrix = [
-            [self.uv_U[0], self.uv_V[0], self.uv_N[0], 1.0, 0.0, 0.0, -self.camera_pos[0]],
-            [self.uv_U[1], self.uv_V[1], self.uv_N[1], 0.0, 1.0, 0.0, -self.camera_pos[1]],
-            [self.uv_U[2], self.uv_V[2], self.uv_N[2], 0.0, 0.0, 1.0, -self.camera_pos[2]]
-        ]
-
-        gaussian_elimination(aug_matrix)
-
-        self.world_to_camera = [
-            aug_matrix[0][3:],
-            aug_matrix[1][3:],
-            aug_matrix[2][3:],
-            [0, 0, 0, 1]
-        ]
+        self.world_to_camera = TransformationFactory.basis_change(self.uv_U, self.uv_V, self.uv_N, self.camera_pos) 
+        print("world_to_camera:")
+        print(self.world_to_camera)
+ 
 
     def build_view_volume(self, near_plane, far_plane, width):
         self.d = near_plane
@@ -101,9 +91,20 @@ class ViewSystem:
 
         self.project_to_window = TransformationFactory.view_plane_projection(float(self.d))
 
+    def edge_in_view_volume(self, edge):
+        q = self.h/self.d
+        for p in edge:
+            if p[0] < -q*p[2] or p[0] > q*p[2] or p[1] < -q*p[2] or p[1] > q*p[2] or p[2] > self.f or p[2] < self.d:
+                return False
+        return True
+
+
+
     def render_scene(self, dimensions, image_name):
 
         randy = Renderer(dimensions) # initialize renderer 
+
+        print("Rendering...")
 
         # move everything to camera basis
         solution_dict = {}
@@ -123,19 +124,22 @@ class ViewSystem:
                 if new_second == None:
                     new_second = apply_transformation(second, self.world_to_camera)
                     solution_dict[second] = new_second
+                
+                print("old: " + str(edge))
+                print("new: " + str((new_first, new_second)))
+                scene_edges.append( (new_first, new_second) )
+        
+        print("basis swap to camera complete")
 
-                scene_edges.append( (first, second) )
 
         # TODO: remove points outside of view volume
+        before_filter = len(scene_edges)
+        scene_edges = list(filter(self.edge_in_view_volume, scene_edges))
+        difference = before_filter - len(scene_edges)
+        print(str(difference) + " edges removes from outside of view volume")
 
         # project to window and write to canvas
-        m = float(dimensions)
-        write_to_canvas = [
-            [0.0,             -m/(2*self.h), 0.0, (m/2)-0.5],
-            [m/(2 * self.h),  0.0,           0.0, (m/2)-0.5],
-            [0.0,             0.0,           0.0, self.d],
-            [0.0,             0.0,           0.0, 1.0]
-        ]
+        write_to_canvas = TransformationFactory.scale_to_image(float(dimensions), float(self.h), float(self.d))
 
         write_to_canvas = matrix_multiplication(write_to_canvas, self.project_to_window)
 
@@ -158,6 +162,8 @@ class ViewSystem:
             randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
 
         randy.save(image_name) # create, write, and save image file
+
+        print("image saved!")
 
         
     

@@ -1,5 +1,7 @@
 from math import *
+import mathUtil
 
+# angle in degrees
 def x_rotation(angle):
     # turns out sin and cos expect radians
     r = radians(angle)
@@ -11,6 +13,7 @@ def x_rotation(angle):
         [0.0, 0.0,    0.0,     1.0]
     ]
 
+# angle in degrees
 def z_rotation(angle):
     # turns out sin and cos expect radians
     r = radians(angle)
@@ -22,6 +25,7 @@ def z_rotation(angle):
         [0.0,    0.0,     0.0, 1.0]
     ]
 
+# angle in degrees
 def y_rotation(angle):
     # turns out sin and cos expect radians
     r = radians(angle)
@@ -33,6 +37,7 @@ def y_rotation(angle):
         [0.0,    0.0, 0.0,     1.0]
     ]
 
+# reposition the object
 def translation(x,y,z):
     return [
         [1.0, 0.0, 0.0, x],
@@ -41,6 +46,7 @@ def translation(x,y,z):
         [0.0, 0.0, 0.0, 1.0]
     ]
 
+# x, y, z are scaling factors
 def scale(x, y, z):
     return [
         [x,   0.0, 0.0, 0.0],
@@ -49,17 +55,42 @@ def scale(x, y, z):
         [0.0, 0.0, 0.0, 1.0]
     ]
 
-def view_plane_projection(x):
+# d = distance to view plane
+def view_plane_projection(d):
     return [
-        [x,   0.0, 0.0, 0.0],
-        [0.0, x,   0.0, 0.0],
-        [0.0, 0.0, x,   0.0],
+        [d,   0.0, 0.0, 0.0],
+        [0.0, d,   0.0, 0.0],
+        [0.0, 0.0, d,   0.0],
         [0.0, 0.0, 1.0, 0.0]
     ]
 
-def augmented_basis_change(U,V,N,C)
+# frame(C, basis(U,V,N))
+def basis_change(U,V,N,C):
+    augmented_identity_mtx = [
+        [U[0], V[0], N[0], 1.0, 0.0, 0.0, -C[0]],
+        [U[1], V[1], N[1], 0.0, 1.0, 0.0, -C[1]],
+        [U[2], V[2], N[2], 0.0, 0.0, 1.0, -C[2]]
+    ]
+    print("before basis change:")
+    print(augmented_identity_mtx)
+    mathUtil.gaussian_elimination(augmented_identity_mtx)
+    print("after basis change:")
+    print(augmented_identity_mtx)
     return [
-            [U[0], V[0], N[0], 1.0, 0.0, 0.0, C[0]],
-            [U[1], V[1], N[1], 0.0, 1.0, 0.0, C[1]],
-            [U[2], V[2], N[2], 0.0, 0.0, 1.0, C[2]]
-        ]
+        augmented_identity_mtx[0][3:],
+        augmented_identity_mtx[1][3:],
+        augmented_identity_mtx[2][3:],
+        [0, 0, 0, 1]
+    ]
+     
+
+# m by m = image area 
+# 2h by 2h = view plane area
+# d = distance to view plane
+def scale_to_image(m, h, d):
+    return [
+        [0.0,         -m/(2.0*h), 0.0, (m/2.0)-0.5],
+        [m/(2.0 * h), 0.0,        0.0, (m/2)-0.5],
+        [0.0,         0.0,        0.0, d],
+        [0.0,         0.0,        0.0, 1.0]
+    ]
