@@ -5,17 +5,8 @@ from itertools import chain
 
 class Renderer:
 
-    def __init__(self):
-        self.mesh = None
-        self.dimensions = 0
-        self.canvas = None
-
-    def render(self, mesh, dimensions, image_name):
+    def __init__(self, dimensions):
         self.dimensions = dimensions
-        self.mesh = mesh
-        if not image_name.endswith(".jpg"):
-            image_name = image_name + ".jpg"
-
         # prep canvas
         self.canvas = []
         for i in range(0, dimensions):
@@ -24,23 +15,12 @@ class Renderer:
                 row.append( (0,0,0) )
             self.canvas.append(row)
 
-        image = Image.new("RGB", (dimensions, dimensions), (0,0,0) )
-
-        offset = self.dimensions / 2 - 2
-
-        for edge in self.mesh.edges:
-            x0 = float((edge[0][0] + 1) * offset) +1
-            y0 = float((edge[0][1] + 1) * offset) +1
-            x1 = float((edge[1][0] + 1) * offset) +1
-            y1 = float((edge[1][1] + 1) * offset) +1
-
-            self.drawLine(x0, y0, x1, y1)
+    def save(self, image_name):
         flat_canvas = list(chain.from_iterable(self.canvas))
+        image = Image.new("RGB", (self.dimensions, self.dimensions), (0,0,0) )
         image.putdata(flat_canvas)
-        
         image.save(image_name, "JPEG")
         image.close()
-        
 
     def plot(self, x, y, c):
         # do actual draw here
@@ -48,13 +28,10 @@ class Renderer:
         py = int(y)
         cc = int( 255.0 * c )
 
-        if px >= self.dimensions:
-            px = self.dimensions - 1
-        if py >= self.dimensions:
-            py = self.dimensions - 1
-
         # NOTE: x and y are flipped here, otherwise the image prints sideways
-        self.canvas[py][px] = (cc, cc, cc)
+        if (px < self.dimensions and py < self.dimensions and px >= 0 and py >= 0):
+            self.canvas[py][px] = (cc, cc, cc)
+
 
     def ipart(self, x):
         return floor(x)

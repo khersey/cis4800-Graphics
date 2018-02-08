@@ -1,35 +1,32 @@
 from Cube import *
 from Cylinder import *
 from Mesh import *
-from Renderer import *
+from Scene import *
+from ViewSystem import *
 import TransformationFactory
+from mathUtil import *
 
 
 def main():
-    randy = Renderer()
 
-    # polyCube = Cube()
-    # polyCube.build_polygon_mesh()
-    # randy.render(polyCube.mesh, 512, "polyCube.jpg")
+    cubeFactory = Cube()
+    cubeFactory.build_triangle_mesh(1)
 
-    triangleCube = Cube()
-    triangleCube.build_triangle_mesh(0)
+    cubeMesh = cubeFactory.mesh
+    # cubeMesh.add_transformation(TransformationFactory.scale(0.5,0.5,0.5))
+    # cubeMesh.add_transformation(TransformationFactory.z_rotation(45))
+    # cubeMesh.add_transformation(TransformationFactory.y_rotation(30))
 
-    cubeMesh = triangleCube.mesh
-    cubeMesh.add_transformation(TransformationFactory.scale(0.5,0.5,0.5))
-    cubeMesh.add_transformation(TransformationFactory.z_rotation(45))
-    cubeMesh.add_transformation(TransformationFactory.y_rotation(30))
-    cubeMesh.apply_transformations()
+    myScene = Scene()
+    myScene.add_mesh(cubeMesh, (0, 0, 0))
 
-    randy.render(cubeMesh, 1080, "HDcube.jpg")
+    camera = ViewSystem(myScene)
+    camera.build_camera(0.0, 0.0, 4000.0)
+    camera.build_view_volume(100.0, 45000.0, 100.0)
+    camera.render_scene(1080, "renders/scene.jpg")
 
-    # polyCylinder = Cylinder()
-    # polyCylinder.build_polygon_mesh()
-    # randy.render(polyCylinder.mesh, 512, "polyCylinder.jpg")
 
-    # triangleCylinder = Cylinder()
-    # triangleCylinder.build_triangle_mesh(4000)
-    # randy.render(triangleCylinder.mesh, 1080, "HDcylinder.jpg")
+
 
 
 if __name__ == "__main__":
