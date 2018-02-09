@@ -18,54 +18,9 @@ class Cube:
         m = Mesh()
 
         v_dict = {}
-        
-        # create all vertices
-        for first in range(0, n+1):
-            for second in range(0, n+1):
-                i = (2.0 / float(n)) * first - 1.0
-                j = (2.0 / float(n)) * second - 1.0
-
-                # z = 1
-                coordinates = (i, j, 1)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-
-                # z = -1
-                coordinates = (i, j, -1)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-
-                # y = 1 
-                coordinates = (i, 1, j)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-
-                # y = -1
-                coordinates = (i, -1, j)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-
-                # x = 1
-                coordinates = (1, i, j)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-            
-                # x = -1
-                coordinates = (-1, i, j)
-                if v_dict.get(coordinates) == None:
-                    v_dict[coordinates] = True
-                    m.vertices.append(coordinates)
-
-        v_dict.clear() # free ram
-
         e_dict = {}
 
-        # create edges
+        # create edges and vertices
         for first in range(0, n+1):
             for second in range(0, n+1):
                 i = float((2.0 / float(n)) * first - 1.0)
@@ -79,6 +34,10 @@ class Cube:
                 horizontal  = (i_plus1, j, 1.0)
                 vertical    = (i, j_plus1, 1.0)
                 diagonal    = (i_plus1, j_plus1, 1.0)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )
@@ -96,6 +55,10 @@ class Cube:
                 horizontal  = (i_plus1, j, -1.0)
                 vertical    = (i, j_plus1, -1.0)
                 diagonal    = (i_plus1, j_plus1, -1.0)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )
@@ -113,6 +76,10 @@ class Cube:
                 horizontal  = (i_plus1, 1.0, j)
                 vertical    = (i, 1.0, j_plus1)
                 diagonal    = (i_plus1, 1.0, j_plus1)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )
@@ -130,6 +97,10 @@ class Cube:
                 horizontal  = (i_plus1, -1.0, j)
                 vertical    = (i, -1.0, j_plus1)
                 diagonal    = (i_plus1, -1.0, j_plus1)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )
@@ -147,6 +118,10 @@ class Cube:
                 horizontal  = (1.0, i_plus1, j)
                 vertical    = (1.0, i, j_plus1)
                 diagonal    = (1.0, i_plus1, j_plus1)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )
@@ -164,6 +139,10 @@ class Cube:
                 horizontal  = (-1.0, i_plus1, j)
                 vertical    = (-1.0, i, j_plus1)
                 diagonal    = (-1.0, i_plus1, j_plus1)
+                if v_dict.get(coordinates) == None:
+                    v_dict[coordinates] = True
+                    m.vertices.append(coordinates)
+
                 if first != n and e_dict.get( (coordinates, horizontal) ) == None:
                     e_dict[ (coordinates, horizontal) ] = True
                     m.edges.append( (coordinates, horizontal) )

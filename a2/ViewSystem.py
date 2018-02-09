@@ -125,14 +125,12 @@ class ViewSystem:
                     new_second = apply_transformation(second, self.world_to_camera)
                     solution_dict[second] = new_second
                 
-                print("old: " + str(edge))
-                print("new: " + str((new_first, new_second)))
+                # print("old: " + str(edge))
+                # print("new: " + str((new_first, new_second)))
                 scene_edges.append( (new_first, new_second) )
-        
         print("basis swap to camera complete")
 
 
-        # TODO: remove points outside of view volume
         before_filter = len(scene_edges)
         scene_edges = list(filter(self.edge_in_view_volume, scene_edges))
         difference = before_filter - len(scene_edges)
@@ -140,7 +138,6 @@ class ViewSystem:
 
         # project to window and write to canvas
         write_to_canvas = TransformationFactory.scale_to_image(float(dimensions), float(self.h), float(self.d))
-
         write_to_canvas = matrix_multiplication(write_to_canvas, self.project_to_window)
 
         solution_dict = {}

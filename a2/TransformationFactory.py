@@ -83,7 +83,6 @@ def basis_change(U,V,N,C):
         [0, 0, 0, 1]
     ]
      
-
 # m by m = image area 
 # 2h by 2h = view plane area
 # d = distance to view plane
