@@ -55,16 +55,28 @@ class Sphere:
                 horizontal  = (x_hor, y_hor, z_plus1)
                 diagonal    = (x_diag, y_diag, z_plus1)
 
+                if v_dict.get(coordinates) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(coordinates)
+
                 if y == -1.0:
                     coordinates = v_bottom
+
+                    if v_dict.get(coordinates) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(coordinates)
+
+                    if v_dict.get(vertical) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(vertical)
 
                     if e_dict.get( (coordinates, vertical) ) == None:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    if v_dict.get(coordinates) == None:
-                        v_dict[coordinates] = True
-                        mesh.vertices.append(coordinates)
+                    
+
+
 
                 elif y_ver == 1.0:
                     vertical = v_top
@@ -73,9 +85,6 @@ class Sphere:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    if v_dict.get(coordinates) == None:
-                        v_dict[coordinates] = True
-                        mesh.vertices.append(coordinates)
 
                 elif y == 1.0:
                     coordinates = v_top
@@ -85,6 +94,18 @@ class Sphere:
                         mesh.vertices.append(coordinates)
 
                 else:
+                    if v_dict.get(vertical) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(vertical)
+
+                    if v_dict.get(horizontal) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(horizontal)
+
+                    if v_dict.get(diagonal) == None:
+                        v_dict[coordinates] = True
+                        mesh.vertices.append(diagonal)
+
                     if e_dict.get( (coordinates, vertical) ) == None:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
@@ -96,10 +117,6 @@ class Sphere:
                     if e_dict.get( (coordinates, diagonal) ) == None:
                         e_dict[ (coordinates, diagonal) ] = True
                         mesh.edges.append( (coordinates, diagonal) )
-
-                    if v_dict.get(coordinates) == None:
-                        v_dict[coordinates] = True
-                        mesh.vertices.append(coordinates)
 
         return mesh
 

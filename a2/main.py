@@ -8,10 +8,11 @@ import TransformationFactory
 from mathUtil import *
 
 
+
 def main():
 
     cubeFactory = Cube()
-    cubeFactory.build_triangle_mesh(2000)
+    cubeFactory.build_triangle_mesh(2000) # TODO: update this method to return a Mesh
 
     cubeMesh = cubeFactory.mesh
     cubeMesh.add_transformation(TransformationFactory.scale(2.0, 2.0, 2.0))
@@ -19,10 +20,10 @@ def main():
     cubeMesh.add_transformation(TransformationFactory.x_rotation(45))
 
     cylinderFactory = Cylinder()
-    cylinderFactory.build_triangle_mesh(1350)
+    cylinderFactory.build_triangle_mesh(1350)  # TODO: update this method to return a Mesh
 
     cylndr = cylinderFactory.mesh
-    cylndr.add_transformation(TransformationFactory.scale(4.0,4.0,4.0))
+    cylndr.add_transformation(TransformationFactory.scale(4.0, 4.0, 4.0))
     cylndr.add_transformation(TransformationFactory.x_rotation(30))
     cylndr.add_transformation(TransformationFactory.z_rotation(-25))
 
@@ -40,12 +41,18 @@ def main():
     camera = ViewSystem(scene0)
     camera.build_camera(0.0, 20.0, 150.0)
     camera.build_view_volume(23.0, 200.0, 5.0)
-    camera.render_scene(1080, "renders/scene.jpg")
+    camera.render_scene(1080, "renders/scene0.jpg")
     camera.scene.reset()
     
     sphereFactory = Sphere()
+    sphere = sphereFactory.build_triangle_mesh(4000)
+    sphere.add_transformation(TransformationFactory.scale(2.0, 2.0, 5.0))
+    sphere.add_transformation(TransformationFactory.y_rotation(35))
 
-
+    camera.scene.add_mesh(sphere, (0.0, 0.0, 0.0))
+    camera.build_camera(90.0, 0.0, 40.0)
+    camera.build_view_volume(20.0, 500.0, 10.0)
+    camera.render_scene(2160, "renders/scene1.jpg")
 
 
 
