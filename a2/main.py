@@ -1,5 +1,6 @@
 from Cube import *
 from Cylinder import *
+from Sphere import *
 from Mesh import *
 from Scene import *
 from ViewSystem import *
@@ -20,15 +21,15 @@ def main():
     cylinderFactory = Cylinder()
     cylinderFactory.build_triangle_mesh(1350)
 
-    mesh = cylinderFactory.mesh
-    mesh.add_transformation(TransformationFactory.scale(4.0,4.0,4.0))
-    mesh.add_transformation(TransformationFactory.x_rotation(30))
-    mesh.add_transformation(TransformationFactory.z_rotation(-25))
+    cylndr = cylinderFactory.mesh
+    cylndr.add_transformation(TransformationFactory.scale(4.0,4.0,4.0))
+    cylndr.add_transformation(TransformationFactory.x_rotation(30))
+    cylndr.add_transformation(TransformationFactory.z_rotation(-25))
 
 
-    myScene = Scene()
-    myScene.add_mesh(mesh, (0.0, 0.0, -3.0))
-    myScene.add_mesh(cubeMesh, (-2.0, -2.0, 1.0))
+    scene0 = Scene()
+    scene0.add_mesh(cylndr, (0.0, 0.0, -3.0))
+    scene0.add_mesh(cubeMesh, (-2.0, -2.0, 1.0))
 
     # cubeFactory.build_triangle_mesh(300)
     # floor_mesh = cubeFactory.mesh
@@ -36,10 +37,13 @@ def main():
 
     # myScene.add_mesh(floor_mesh, (0.0, 0.0, -1.0))
 
-    camera = ViewSystem(myScene)
+    camera = ViewSystem(scene0)
     camera.build_camera(0.0, 20.0, 150.0)
     camera.build_view_volume(23.0, 200.0, 5.0)
     camera.render_scene(1080, "renders/scene.jpg")
+    camera.scene.reset()
+    
+    sphereFactory = Sphere()
 
 
 
