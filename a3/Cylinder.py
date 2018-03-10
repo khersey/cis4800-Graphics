@@ -1,4 +1,6 @@
 from Mesh import *
+from Face import *
+
 from math import *
 
 class Cylinder:
@@ -58,6 +60,9 @@ class Cylinder:
                         v_dict[v_top] = True
                         m.vertices.append(v_top)
 
+                    # add face
+                    m.faces.append(Face(coordinates, v_top, horizontal))
+
                 # if bottom
                 if y == -1.0 and e_dict.get( (coordinates, v_bottom) ) == None:
                     e_dict[ (coordinates, v_bottom) ] = True
@@ -70,6 +75,9 @@ class Cylinder:
                     if v_dict.get(v_bottom) == None:
                         v_dict[v_bottom] = True
                         m.vertices.append(v_bottom)
+                    
+                    # add face
+                    m.faces.append(Face(coordinates, v_bottom, horizontal))
 
                 # horizontal
                 if e_dict.get( (coordinates, horizontal) ) == None:
@@ -109,5 +117,10 @@ class Cylinder:
                     if v_dict.get(diagonal) == None:
                         v_dict[diagonal] = True
                         m.vertices.append(diagonal)
+                
+                # add faces
+                if y != 1.0:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
 
         self.mesh = m

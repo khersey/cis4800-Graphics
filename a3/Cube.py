@@ -1,4 +1,5 @@
 from Mesh import *
+from Face import *
 
 class Cube:
 
@@ -50,6 +51,12 @@ class Cube:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
 
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
+
+
                 # z = -1
                 coordinates = (i, j, -1.0)
                 horizontal  = (i_plus1, j, -1.0)
@@ -70,6 +77,12 @@ class Cube:
                 if first != n and second != n and e_dict.get( (coordinates, diagonal) ) == None:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
+                
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
+
 
                 # y = 1 
                 coordinates = (i, 1.0, j)
@@ -92,6 +105,12 @@ class Cube:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
 
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
+
+
                 # y = -1
                 coordinates = (i, -1.0, j)
                 horizontal  = (i_plus1, -1.0, j)
@@ -113,6 +132,12 @@ class Cube:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
 
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
+
+
                 # x = 1
                 coordinates = (1.0, i, j)
                 horizontal  = (1.0, i_plus1, j)
@@ -133,6 +158,11 @@ class Cube:
                 if first != n and second != n and e_dict.get( (coordinates, diagonal) ) == None:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
+                
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
             
                 # x = -1
                 coordinates = (-1.0, i, j)
@@ -154,6 +184,11 @@ class Cube:
                 if first != n and second != n and e_dict.get( (coordinates, diagonal) ) == None:
                     e_dict[ (coordinates, diagonal) ] = True
                     m.edges.append( (coordinates, diagonal) )
+
+                # add faces
+                if first != n and second != n:
+                    m.faces.append(Face(coordinates, horizontal, diagonal))
+                    m.faces.append(Face(coordinates, vertical, diagonal))
 
         self.mesh = m
             
