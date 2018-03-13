@@ -4,6 +4,7 @@ from mathUtil import *
 from Renderer import *
 from Mesh import *
 from Scene import *
+from Face import *
 
 class ViewSystem:
 
@@ -88,54 +89,47 @@ class ViewSystem:
            (-h_at_f,  h_at_f, self.f),
            (-h_at_f, -h_at_f, self.f)
         )
-
         self.to_screen_space = TransformationFactory.to_screen_space(float(self.d), float(self.h), float(self.f))
 
-    def edge_in_view_volume(self, edge):
-        q = self.h/self.d
-        for p in edge:
-            if p[0] < -q*p[2] or p[0] > q*p[2] or p[1] < -q*p[2] or p[1] > q*p[2] or p[2] > self.f or p[2] < self.d:
-                return False
-        return True
-
-
-
     def render_scene(self, dimensions, image_name):
+        to_canvas = TransformationFactory.to_canvas(dimensions)
 
         randy = Renderer(dimensions) # initialize renderer 
 
         print("Rendering...")
 
         # TO VIEW SPACE
-        solution_dict = {}
+        scene_edges = []
         scene_faces = []
         for model in self.scene.models:
             for face in model.faces:
-                # TODO: do this with faces
-                # TODO: do this without modifying the original scene
-
-                first = edge[0]
-                second = edge[1]
-
-                new_first = solution_dict.get(first)
-                new_second = solution_dict.get(second)
-
-                if new_first == None:
-                    new_first = apply_transformation(first, self.to_view_space)
-                    solution_dict[first] = new_first
+                scene_faces.append(Face(face.v1, face.v2, face.v3, random_color()))
+        print("faces in scene: {}".format(len(scene_faces)))
                 
-                if new_second == None:
-                    new_second = apply_transformation(second, self.to_view_space)
-                    solution_dict[second] = new_second
-                
-                # print("old: " + str(edge))
-                # print("new: " + str((new_first, new_second)))
-                scene_edges.append( (new_first, new_second) )
+        scene_faces = transform_faces(scene_faces, self.to_view_space)
         print("basis swap to camera complete")
+
+        # TODO: RENDER HERE
+        self.render_face_edges(scene_faces, dimensions, image_name + "_beforeCulling", [self.to_screen_space, to_canvas])
 
         # TODO: CULLING
 
-        
+        before_filter = len(scene_faces)
+        # scene_faces = list(filter(lambda face: face.should_cull(self.camera_pos), scene_faces))
+        culled_faces = []
+        for face in scene_faces:
+            if not face.should_cull():
+                culled_faces.append(face)
+
+        difference = before_filter - len(culled_faces)
+        print(str(difference) + " FACES CULLED")
+
+        # TODO: RENDER HERE
+        self.render_face_edges(culled_faces, dimensions, image_name + "_afterCulling", [self.to_screen_space, to_canvas])
+
+
+
+        return
 
         # TO SCREEN SPACE
         solution_dict = {}
@@ -155,6 +149,8 @@ class ViewSystem:
                 solution_dict[second] = p1
 
         # TODO: Clipping
+
+        # TODO: RENDER HERE
 
         # TODO: Rasterize
 
@@ -178,13 +174,90 @@ class ViewSystem:
                 p1 = apply_transformation(second, write_to_canvas)
                 solution_dict[second] = p1
 
-            randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
+            if (p0[2] >= 0 and p0[2] <= 1) or (p1[2] >= 0 and p1[2] <= 1):
+                randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
 
+        # TODO: RENDER HERE
         randy.save(image_name) # create, write, and save image file
 
         print("image saved!")
 
-        
-    
+    def render_edges(self, scene_edges, dimensions, image_name, transformations):
+        randy = Renderer(dimensions)
 
+        scene_edges = transform_edges(scene_edges, transformations[0])
+        scene_edges = transform_edges(scene_edges, transformations[1])
+        
+        for edge in scene_edges:
+            p0 = edge[0]
+            p1 = edge[1]
+
+            # p0 = solution_dict.get(first)
+            # p1 = solution_dict.get(second)
+
+            # if p0 == None:
+            #     p0 = first
+            #     for t in transformations:
+            #         p0 = apply_transformation(p0, t)
+            #     solution_dict[first] = p0
+            
+            # if p1 == None:
+            #     p1 = second 
+            #     for t in transformations:
+            #         p1 = apply_transformation(p1, t)
+            #     solution_dict[second] = p1
+
+            randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
+
+        # TODO: RENDER HERE
+        randy.save(image_name) # create, write, and save image file
+
+    def render_face_edges(self, scene_faces, dimensions, image_name, transformations):
+        randy = Renderer(dimensions)
+
+        # print("VIEW SPACE: ", scene_faces[0].get_edges())
+        # scene_faces = transform_faces(scene_faces, transformations[0])
+        # print("SCREEN SPACE: ", scene_faces[0].get_edges())
+        # scene_faces = transform_faces(scene_faces, transformations[1])
+        # print("CANVAS SPACE: ", scene_faces[0].get_edges())
+
+        scene_edges = []
+
+        for face in scene_faces:
+            for edge in face.get_edges():
+                scene_edges.append(edge)
+        
+        print("edges collected!")
+        print("# edges: {}".format(len(scene_edges)))
+
+        scene_edges = transform_edges(scene_edges, transformations[0])
+        scene_edges = transform_edges(scene_edges, transformations[1])
+        
+        for edge in scene_edges:
+            p0 = edge[0]
+            p1 = edge[1]
+
+            # p0 = solution_dict.get(first)
+            # p1 = solution_dict.get(second)
+
+            # if p0 == None:
+            #     p0 = first
+            #     for t in transformations:
+            #         p0 = apply_transformation(p0, t)
+            #     solution_dict[first] = p0
+            
+            # if p1 == None:
+            #     p1 = second 
+            #     for t in transformations:
+            #         p1 = apply_transformation(p1, t)
+            #     solution_dict[second] = p1
+
+            randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
+          
+
+
+        # TODO: RENDER HERE
+        randy.save(image_name) # create, write, and save image file
+
+    
     

@@ -19,8 +19,9 @@ class Renderer:
         flat_canvas = list(chain.from_iterable(self.canvas))
         image = Image.new("RGB", (self.dimensions, self.dimensions), (0,0,0) )
         image.putdata(flat_canvas)
-        image.save(image_name, "JPEG")
+        image.save(image_name + ".jpg", "JPEG")
         image.close()
+        print("RANDY: I've rendered " + image_name + ".jpg for your health")
 
     def plot(self, x, y, c):
         # do actual draw here

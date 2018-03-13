@@ -84,9 +84,7 @@ def basis_change(U,V,N,C):
     ]
      
 # m by m = image area 
-# 2h by 2h = view plane area
-# d = distance to view plane
-def to_canvas(m, h, d):
+def to_canvas(m):
     return [
         [0.0,    -m/(2.0),  0.0, (m/2.0)-0.5],
         [m/(2.0), 0.0,      0.0, (m/2.0)-0.5],

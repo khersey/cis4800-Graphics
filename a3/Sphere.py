@@ -1,5 +1,6 @@
 from Mesh import *
 from math import *
+from Face import *
 
 class Sphere:
 
@@ -59,7 +60,7 @@ class Sphere:
                         v_dict[coordinates] = True
                         mesh.vertices.append(coordinates)
 
-                if y == -1.0:
+                if y == -1.0: # bottom tip
                     coordinates = v_bottom
 
                     if v_dict.get(coordinates) == None:
@@ -74,28 +75,29 @@ class Sphere:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    mesh.faces.append(Face(coordinates, vertical, diagonal))
+                    natural = cross_product(vector_from_points(horizontal, vertical), vector_from_points(horizontal, coordinates))
+                    mesh.faces.append(Face(coordinates, vertical, diagonal, natural))
 
-                elif y_ver == 1.0:
+                elif y_ver == 1.0: # one row below the top 
                     vertical = v_top
 
                     if e_dict.get( (coordinates, vertical) ) == None:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    mesh.faces.append(Face(coordinates, vertical, horizontal))
+                    natural = cross_product(vector_from_points(diagonal, vertical), vector_from_points(diagonal, coordinates))
+                    mesh.faces.append(Face(coordinates, vertical, horizontal, natural))
 
 
-                elif y == 1.0:
+                elif y == 1.0: # top tip
                     coordinates = v_top
 
                     if v_dict.get(coordinates) == None:
                         v_dict[coordinates] = True
                         mesh.vertices.append(coordinates)
+                    # no faces for top tip
 
-                    # no face
-
-                else:
+                else: # normal polygon
                     if v_dict.get(vertical) == None:
                         v_dict[coordinates] = True
                         mesh.vertices.append(vertical)
@@ -120,8 +122,9 @@ class Sphere:
                         e_dict[ (coordinates, diagonal) ] = True
                         mesh.edges.append( (coordinates, diagonal) )
 
-                    mesh.faces.append(Face(coordinates, vertical, diagonal))
-                    mesh.faces.append(Face(coordinates, horizontal, diagonal))
+                    natural = cross_product(vector_from_points(horizontal, coordinates), vector_from_points(horizontal, diagonal))
+                    mesh.faces.append(Face(coordinates, vertical, diagonal, natural))
+                    mesh.faces.append(Face(coordinates, horizontal, diagonal, natural))
 
         return mesh
 
