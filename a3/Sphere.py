@@ -75,8 +75,7 @@ class Sphere:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    natural = cross_product(vector_from_points(horizontal, vertical), vector_from_points(horizontal, coordinates))
-                    mesh.faces.append(Face(coordinates, vertical, diagonal, natural))
+                    mesh.faces.append(Face(coordinates, vertical, diagonal))
 
                 elif y_ver == 1.0: # one row below the top 
                     vertical = v_top
@@ -85,8 +84,7 @@ class Sphere:
                         e_dict[ (coordinates, vertical) ] = True
                         mesh.edges.append( (coordinates, vertical) )
 
-                    natural = cross_product(vector_from_points(diagonal, vertical), vector_from_points(diagonal, coordinates))
-                    mesh.faces.append(Face(coordinates, vertical, horizontal, natural))
+                    mesh.faces.append(Face(coordinates, vertical, horizontal))
 
 
                 elif y == 1.0: # top tip
@@ -122,9 +120,8 @@ class Sphere:
                         e_dict[ (coordinates, diagonal) ] = True
                         mesh.edges.append( (coordinates, diagonal) )
 
-                    natural = cross_product(vector_from_points(horizontal, coordinates), vector_from_points(horizontal, diagonal))
-                    mesh.faces.append(Face(coordinates, vertical, diagonal, natural))
-                    mesh.faces.append(Face(coordinates, horizontal, diagonal, natural))
+                    mesh.faces.append(Face(coordinates, vertical, diagonal))
+                    mesh.faces.append(Face(diagonal, horizontal, coordinates))
 
         return mesh
 

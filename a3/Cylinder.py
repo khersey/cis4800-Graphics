@@ -63,7 +63,7 @@ class Cylinder:
                         mesh.vertices.append(v_top)
 
                     # add face
-                    mesh.faces.append(Face(coordinates, v_top, horizontal))
+                    mesh.faces.append(Face(v_top, horizontal, coordinates))
 
                 # if bottom
                 if y == -1.0 and e_dict.get( (coordinates, v_bottom) ) == None:
@@ -79,7 +79,7 @@ class Cylinder:
                         mesh.vertices.append(v_bottom)
                     
                     # add face
-                    mesh.faces.append(Face(coordinates, v_bottom, horizontal))
+                    mesh.faces.append(Face(v_bottom, coordinates, horizontal))
 
                 # horizontal
                 if e_dict.get( (coordinates, horizontal) ) == None:

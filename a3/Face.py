@@ -24,10 +24,6 @@ class Face:
     def should_cull(self):        
         cp = mathUtil.vector_from_points(self.v1, (0,0,0))
         result = mathUtil.dot_product(cp, self.nN)
-
-        print("cp = {}".format(self.v1))
-        print("nN = {}".format(self.nN))
-        print("cp . Nn = {}".format(result))
         return result >= 0
 
     def generate_normal(self):

@@ -60,8 +60,8 @@ class ViewSystem:
         magnitude = sqrt(v_CO[0]*v_CO[0] + v_CO[1]*v_CO[1] + v_CO[2]*v_CO[2]) # get the magnitude / norm
         # build unit vectors for new basis
         self.uv_N = (v_CO[0] / magnitude, v_CO[1] / magnitude, v_CO[2] / magnitude) # unit vector N
-        self.uv_V = cross_product( self.uv_N, (0,0,1) ) # unit vector V
-        self.uv_U = cross_product( self.uv_N, self.uv_V )    # unit vector U
+        self.uv_V = cross_product( self.uv_N, (0.0, 0.0, 1.0) ) # unit vector V
+        self.uv_U = cross_product(self.uv_N, self.uv_V )    # unit vector U
 
         self.to_view_space = TransformationFactory.basis_change(self.uv_U, self.uv_V, self.uv_N, self.camera_pos) 
         print("world_to_camera:")
