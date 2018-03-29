@@ -134,34 +134,17 @@ class ViewSystem:
         self.render_face_edges(scene_faces, dimensions, image_name + "_afterClipping", [to_canvas])
 
         # TODO: RENDER HERE
+        scene_faces = transform_faces(scene_faces, to_canvas)
+        for face in scene_faces:
+            randy.rasterize(face)
+            
+        randy.save(image_name + "_afterRasterizing")
 
         # TODO: Rasterize
+        
 
         # TODO: Z-Buffer
 
-        
-
-        solution_dict = {}
-        for index in range(0, len(scene_edges)):
-            first = scene_edges[index][0]
-            second = scene_edges[index][1]
-
-            p0 = solution_dict.get(first)
-            p1 = solution_dict.get(second)
-
-            if p0 == None:
-                p0 = apply_transformation(first, write_to_canvas)
-                solution_dict[first] = p0
-            
-            if p1 == None:
-                p1 = apply_transformation(second, write_to_canvas)
-                solution_dict[second] = p1
-
-            if (p0[2] >= 0 and p0[2] <= 1) or (p1[2] >= 0 and p1[2] <= 1):
-                randy.drawLine(p0[0], p0[1], p1[0], p1[1]) # draw line
-
-        # TODO: RENDER HERE
-        randy.save(image_name) # create, write, and save image file
 
         print("image saved!")
 
