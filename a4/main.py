@@ -52,7 +52,7 @@ def main():
     camera.build_view_volume(20.0, 500.0, 10.0)
     #camera.render_scene(2160, "renders/scene1")
 
-    basicAssCube = cubeFactory.build_polygon_mesh()
+    basicAssCube = cubeFactory.build_triangle_mesh(128)
     basicAssCube.add_transformation(TransformationFactory.y_rotation(30))
     basicAssCube.add_transformation(TransformationFactory.x_rotation(30))
     basicAssCube.add_transformation(TransformationFactory.z_rotation(30))
@@ -61,7 +61,7 @@ def main():
     camera.build_camera(0.0, 0.0, 10)
     camera.build_view_volume(3.0, 25.0, 2.0)
     camera.scene.add_mesh(basicAssCube, (0.0, 0.0, 0.0))
-    #camera.render_scene(900, "renders/cube")
+    camera.render_scene(900, "renders/cube")
 
     basicAssCylndr = cylinderFactory.build_triangle_mesh(4000)
     basicAssCylndr.add_transformation(TransformationFactory.y_rotation(30))
