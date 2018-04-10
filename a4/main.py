@@ -40,7 +40,7 @@ def main():
     camera = ViewSystem(scene0)
     camera.build_camera(0.0, 20.0, 150.0)
     camera.build_view_volume(23.0, 200.0, 5.0)
-    camera.render_scene(1080, "renders/scene0")
+    # camera.render_scene(1080, "renders/scene0")
     camera.scene.reset()
 
     sphere1 = sphereFactory.build_triangle_mesh(4000)
@@ -61,7 +61,7 @@ def main():
     camera.build_camera(0.0, 0.0, 10)
     camera.build_view_volume(3.0, 25.0, 2.0)
     camera.scene.add_mesh(basicAssCube, (0.0, 0.0, 0.0))
-    camera.render_scene(900, "renders/cube")
+    # camera.render_scene(900, "renders/cube")
 
     basicAssCylndr = cylinderFactory.build_triangle_mesh(4000)
     basicAssCylndr.add_transformation(TransformationFactory.y_rotation(30))
@@ -70,7 +70,7 @@ def main():
     basicAssCylndr.add_transformation(TransformationFactory.scale(4.0, 4.0, 4.0))
 
     camera.scene.reset()
-    camera.build_camera(0.0, 0.0, 8.0)
+    camera.build_camera(25.0, 25.0, 8.0)
     camera.build_view_volume(3.0, 25.0, 2.0)
     camera.scene.add_mesh(basicAssCylndr, (0.0, 0.0, 0.0))
     camera.render_scene(2000, "renders/cylinder")
@@ -81,7 +81,7 @@ def main():
     basicAssSphere.add_transformation(TransformationFactory.z_rotation(30))
 
     camera.scene.reset()
-    camera.build_camera(8.0,0.0, 10.0)
+    camera.build_camera(20.0, 50.0, 10.0)
     camera.build_view_volume(3.0, 25.0, 2.0)
     camera.scene.add_mesh(basicAssSphere, (0.0, 0.0, 0.0))
     camera.render_scene(900, "renders/sphere")

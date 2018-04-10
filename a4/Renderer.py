@@ -60,7 +60,7 @@ class Renderer:
                 for pixel in line:
                     x, y, z = pixel[0], pixel[1], pixel[2]
                     if y != y_max:
-                        if row_dict.get(y) == None:
+                        if row_dict.get(y) == None:xw
                             print(face.get_edges())
                             print(line)
                         row = row_dict[y]
