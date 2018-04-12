@@ -27,8 +27,8 @@ def main():
     sphere.add_transformation(TransformationFactory.y_rotation(35))
 
     scene0 = Scene()
-    scene0.add_mesh(cylndr, (0.0, 0.0, -3.0))
-    scene0.add_mesh(cube, (-2.0, -2.0, 1.0))
+    scene0.add_mesh(cylndr, (0.0, -1.0, 0.0))
+    scene0.add_mesh(cube, (0.0, 1.0, 0.0))
     scene0.add_mesh(sphere, (5.0, 5.0, 1.0))
 
     # cubeFactory.build_triangle_mesh(300)
@@ -38,9 +38,9 @@ def main():
     # myScene.add_mesh(floor_mesh, (0.0, 0.0, -1.0))
 
     camera = ViewSystem(scene0)
-    camera.build_camera(0.0, 20.0, 150.0)
+    camera.build_camera(0.0, 0.0, 150.0)
     camera.build_view_volume(23.0, 200.0, 5.0)
-    # camera.render_scene(1080, "renders/scene0")
+    camera.render_scene(1080, "renders/scene0")
     camera.scene.reset()
 
     sphere1 = sphereFactory.build_triangle_mesh(4000)

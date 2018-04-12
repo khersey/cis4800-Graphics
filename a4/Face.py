@@ -8,6 +8,7 @@ class Face:
         self.v3 = vertex3
         self.nN = self.generate_normal()
         self.rgb = color
+        self.neighbours = []
         
     # returns list of edges
     def get_edges(self):

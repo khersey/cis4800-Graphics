@@ -28,7 +28,7 @@ def main():
 
     scene0 = Scene()
     scene0.add_mesh(cylndr, (0.0, 0.0, -3.0))
-    scene0.add_mesh(cube, (-2.0, -2.0, 1.0))
+    scene0.add_mesh(cube, (-2.0, 0.0, 1.0))
     scene0.add_mesh(sphere, (5.0, 5.0, 1.0))
 
     # cubeFactory.build_triangle_mesh(300)
